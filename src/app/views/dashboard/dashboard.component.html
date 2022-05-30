@@ -1,0 +1,430 @@
+<tabset>
+    <tab id="aws" (selectTab)="changeTab($event)">
+     <ng-template tabHeading><i class="icon-calculator"></i> AWS</ng-template>
+
+<!-- CPs: {{this.selectedCP|json}}<br/>
+Services:{{this.selectedServices|json}}<br/>
+Accounts:{{this.selectedAccounts|json}}<br/>
+{{selectedAwsInstances|json}} -->
+<!-- {{regionArray|json}} -->
+<p class="a1" *ngIf="isLoading" style="text-align: center;">Hold tight, we are loading your data.</p>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+       <!--      <div class="col-md-4">
+                <ng-multiselect-dropdown
+                [placeholder]="'Select Cloud Provider'"
+                [settings]="cloudProvidersSettings"
+                [data]="cloudProviders"
+                (onSelect)="onCloudProviderSelect($event)"
+                (onSelectAll)="onCloudProviderSelectAll($event)"
+                (onDeSelect)="onCloudProviderDeSelect($event)"
+                (onDeSelectAll)="onCloudProviderUnSelectAll()"
+                >
+            </ng-multiselect-dropdown>
+            </div> -->
+             <div class="col-md-4">
+                <ng-multiselect-dropdown
+                [disabled]= isLoading
+                [placeholder]="'Select Service'"
+                [settings]="servicesSettings"
+                [data]="services"
+                (onSelect)="onServiceSelect($event)"
+                (onSelectAll)="onServiceSelectAll($event)"
+                (onDeSelect)="onServiceDeSelect($event)"
+                (onDeSelectAll)="onServiceUnSelectAll()"
+                >
+            </ng-multiselect-dropdown>
+            </div>
+        
+            <div class="col-md-8">
+                <ng-multiselect-dropdown
+                [disabled]= isLoading
+                [placeholder]="'Select Account Name'"
+                [settings]="accountListSettings"
+                [data]="awsAccounts"
+                (onSelect)="onAccountSelect($event)"
+                (onSelectAll)="onAccountSelectAll($event)"
+                (onDeSelect)="onAccountDeSelect($event)"
+                (onDeSelectAll)="onAccountUnSelectAll()"
+                >
+            </ng-multiselect-dropdown>
+            </div>
+          </div>
+     </div>
+
+    
+</div>     
+
+
+<app-custom-loader *ngIf="isLoading"></app-custom-loader>
+
+
+<!-- TotalAWSAccounts:number=0;
+TotalAWSInstanceCount:number=0;
+TotalAWSRunningInstances:number=0;
+TotalAWSStoppedInstances:number=0; -->
+     <div class="animated fadeIn">
+        <div class="row">
+          <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-info">
+              <div class="card-body pb-0">
+                <div class="text-value">{{TotalAWSAccounts || 0}}</div>
+                <div>Total Accounts</div>
+              </div>
+              <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                <canvas baseChart class="chart"
+                [datasets]="lineChart2Data"
+                [labels]="lineChart2Labels"
+                [options]="lineChart2Options"
+                [colors]="lineChart2Colours"
+                [legend]="lineChart2Legend"
+                [chartType]="lineChart2Type"></canvas>
+              </div>
+            </div>
+          </div><!--/.col-->
+          <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-primary">
+              <div class="card-body pb-0">
+               
+                <div class="text-value">{{TotalAWSInstanceCount || 0}}</div>
+                <div>Total Instances</div>
+              </div>
+              <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                <canvas baseChart class="chart"
+                        [datasets]="lineChart1Data"
+                        [labels]="lineChart1Labels"
+                        [options]="lineChart1Options"
+                        [colors]="lineChart1Colours"
+                        [legend]="lineChart1Legend"
+                        [chartType]="lineChart1Type"></canvas>
+              </div>
+            </div>
+          </div><!--/.col-->
+          <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-warning">
+              <div class="card-body pb-0">
+              
+                <div class="text-value">{{TotalAWSRunningInstances || 0}}</div>
+                <div>Totall Running Instances</div>
+              </div>
+              <div class="chart-wrapper mt-3" style="height:70px;">
+                <canvas baseChart class="chart"
+                [datasets]="lineChart3Data"
+                [labels]="lineChart3Labels"
+                [options]="lineChart3Options"
+                [colors]="lineChart3Colours"
+                [legend]="lineChart3Legend"
+                [chartType]="lineChart3Type"></canvas>
+              </div>
+            </div>
+          </div><!--/.col-->
+          <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-danger">
+              <div class="card-body pb-0">
+               
+                <div class="text-value">{{TotalAWSStoppedInstances || 0}}</div>
+                <div>Total Stopped Instances</div>
+              </div>
+              <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                <canvas baseChart class="chart"
+                [datasets]="barChart1Data"
+                [labels]="barChart1Labels"
+                [options]="barChart1Options"
+                [colors]="barChart1Colours"
+                [legend]="barChart1Legend"
+                [chartType]="barChart1Type"></canvas>
+              </div>
+            </div>
+          </div><!--/.col-->
+        </div><!--/.row-->
+       <!--  <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-5">
+                <h4 class="card-title mb-0">Traffic</h4>
+                <div class="small text-muted">November 2017</div>
+              </div>
+              <div class="col-sm-7 d-none d-md-block">
+                <button type="button" class="btn btn-primary float-right"><i class="icon-cloud-download"></i></button>
+                <div class="btn-group btn-group-toggle float-right mr-3" data-toggle="buttons">
+                  <label class="btn btn-outline-secondary" [(ngModel)]="radioModel" btnRadio="Day" id="option1">Day</label>
+                  <label class="btn btn-outline-secondary" [(ngModel)]="radioModel" btnRadio="Month" id="option2">Month</label>
+                  <label class="btn btn-outline-secondary" [(ngModel)]="radioModel" btnRadio="Year" id="option3">Year</label>
+                </div>
+              </div>
+            </div>
+            <div class="chart-wrapper" style="height:300px;margin-top:40px;">
+              <canvas baseChart class="chart"
+              [datasets]="mainChartData"
+              [labels]="mainChartLabels"
+              [options]="mainChartOptions"
+              [colors]="mainChartColours"
+              [legend]="mainChartLegend"
+              [chartType]="mainChartType"></canvas>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="row text-center">
+              <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                <div class="text-muted">Visits</div>
+                <strong>29.703 Users (40%)</strong>
+                <div class="progress progress-xs mt-2">
+                  <div class="progress-bar bg-success" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                <div class="text-muted">Unique</div>
+                <strong>24.093 Users (20%)</strong>
+                <div class="progress progress-xs mt-2">
+                  <div class="progress-bar bg-info" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                <div class="text-muted">Pageviews</div>
+                <strong>78.706 Views (60%)</strong>
+                <div class="progress progress-xs mt-2">
+                  <div class="progress-bar bg-warning" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                <div class="text-muted">New Users</div>
+                <strong>22.123 Users (80%)</strong>
+                <div class="progress progress-xs mt-2">
+                  <div class="progress-bar bg-danger" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                <div class="text-muted">Bounce Rate</div>
+                <strong>40.15%</strong>
+                <div class="progress progress-xs mt-2">
+                  <div class="progress-bar" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <!--/.card-->
+        <!-- <div class="row">
+          <div class="col-sm-6 col-lg-3">
+            <div class="brand-card">
+              <div class="brand-card-header bg-facebook">
+                <i class="fa fa-facebook"></i>
+                <div class="chart-wrapper">
+                  <canvas baseChart class="chart"
+                  [datasets]="brandBoxChartData1"
+                  [labels]="brandBoxChartLabels"
+                  [options]="brandBoxChartOptions"
+                  [colors]="brandBoxChartColours"
+                  [legend]="brandBoxChartLegend"
+                  [chartType]="brandBoxChartType"></canvas>
+                </div>
+              </div>
+              <div class="brand-card-body">
+                <div>
+                  <div class="text-value">89k</div>
+                  <div class="text-uppercase text-muted small">friends</div>
+                </div>
+                <div>
+                  <div class="text-value">459</div>
+                  <div class="text-uppercase text-muted small">feeds</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="brand-card">
+              <div class="brand-card-header bg-twitter">
+                <i class="fa fa-twitter"></i>
+                <div class="chart-wrapper">
+                  <canvas baseChart class="chart"
+                  [datasets]="brandBoxChartData2"
+                  [labels]="brandBoxChartLabels"
+                  [options]="brandBoxChartOptions"
+                  [colors]="brandBoxChartColours"
+                  [legend]="brandBoxChartLegend"
+                  [chartType]="brandBoxChartType"></canvas>
+                </div>
+              </div>
+              <div class="brand-card-body">
+                <div>
+                  <div class="text-value">973k</div>
+                  <div class="text-uppercase text-muted small">followers</div>
+                </div>
+                <div>
+                  <div class="text-value">1.792</div>
+                  <div class="text-uppercase text-muted small">tweets</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="brand-card">
+              <div class="brand-card-header bg-linkedin">
+                <i class="fa fa-linkedin"></i>
+                <div class="chart-wrapper">
+                  <canvas baseChart class="chart"
+                  [datasets]="brandBoxChartData3"
+                  [labels]="brandBoxChartLabels"
+                  [options]="brandBoxChartOptions"
+                  [colors]="brandBoxChartColours"
+                  [legend]="brandBoxChartLegend"
+                  [chartType]="brandBoxChartType"></canvas>
+                </div>
+              </div>
+              <div class="brand-card-body">
+                <div>
+                  <div class="text-value">500+</div>
+                  <div class="text-uppercase text-muted small">contacts</div>
+                </div>
+                <div>
+                  <div class="text-value">292</div>
+                  <div class="text-uppercase text-muted small">feeds</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="brand-card">
+              <div class="brand-card-header bg-google-plus">
+                <i class="fa fa-google-plus"></i>
+                <div class="chart-wrapper">
+                  <canvas baseChart class="chart"
+                  [datasets]="brandBoxChartData4"
+                  [labels]="brandBoxChartLabels"
+                  [options]="brandBoxChartOptions"
+                  [colors]="brandBoxChartColours"
+                  [legend]="brandBoxChartLegend"
+                  [chartType]="brandBoxChartType"></canvas>
+                </div>
+              </div>
+              <div class="brand-card-body">
+                <div>
+                  <div class="text-value">894</div>
+                  <div class="text-uppercase text-muted small">followers</div>
+                </div>
+                <div>
+                  <div class="text-value">92</div>
+                  <div class="text-uppercase text-muted small">circles</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                Region wise Instances
+              </div>
+              <div class="card-body" >
+                <div class="row">
+                  <div class="col-sm-12" *ngIf="regionArray.length">
+                    <div class="row">
+                      <div class="col-sm-2" *ngFor="let data of regionArray">
+                        <div class="callout callout-info">
+                          <small class="text-muted">{{data.region}}</small>
+                          <br>
+                          <strong class="h4">{{data.count}}</strong>
+                        </div>
+                      </div>
+                  
+                    </div>
+                   
+
+                  </div><!--/.col-->
+                
+                </div><!--/.row-->
+                <br>
+               
+              </div>
+            </div>
+          </div><!--/.col-->
+        </div><!--/.row-->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                  <div class="card-header">
+                    Instances List  
+                   <!--  <span style="cursor: pointer" title="View Full JSON" class="badge badge-primary" (click)="openXl(content,'{}')">See Full JSON</span>   -->
+                  </div>
+                  <div class="card-body">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Type</th>
+                            <th>State</th>
+                            <th>Launch Time</th>
+                            <th>Region</th>
+                            <th>Account</th>
+                            <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                            <tr *ngFor=" let instance of selectedAwsInstances  | paginate: { itemsPerPage: limit, currentPage: page,
+                                totalItems: total }; let i = index; ">
+                                <td>{{ instance?.InstanceId }}</td>
+                                <td>{{ instance?.InstanceType }}</td>
+                                <td>{{ instance?.State }}</td>
+                                <td>{{ instance?.LaunchTime }}</td>
+                                <td>{{ instance?.region }}</td>
+                                <td>{{ instance?.account_name }}</td>
+                                
+                                <td>
+                                  <!-- <i style="cursor: pointer" class="icon cil-pencil" title="Edit this user" [routerLink]="[
+                                  '/admin/edit-user/' + user?._id ]"></i>&nbsp;&nbsp;<i style="cursor: pointer" class="icon cil-delete" title="Delete this user" (click)="deleteUser(user?._id)" ></i>
+                                  &nbsp;&nbsp;
+                                  <span style="cursor: pointer" title="Change user status" class="badge badge-primary" (click)="updateStatus(user?._id,!user?.active_status)">Change Status</span> -->
+                                  <span style="cursor: pointer" title="View Full JSON" class="badge badge-primary" (click)="openXl(content,instance?.FullJson)">See Full JSON</span>
+                                  
+
+                                </td>
+                       
+                      </tbody>
+                    </table>
+                    <div class="pull-right">
+                            <pagination-controls (pageChange)="pageChange($event)"></pagination-controls>
+                    </div> 
+                    
+                  </div>
+                </div>
+              </div>
+        </div>
+      </div>
+   </tab>
+
+
+   <tab id="azure" (selectTab)="changeTab($event)">
+     <ng-template tabHeading><i class="icon-basket-loaded"></i> AZURE</ng-template>
+     <!-- {{azureAccounts|json}} -->
+     In Progress...
+   </tab>
+   <tab id="gcp" (selectTab)="changeTab($event)">
+     <ng-template tabHeading><i class="icon-pie-chart"></i> GCP</ng-template>
+     <!-- {{gcpAccounts|json}} -->
+     In Progress...
+   </tab>
+ </tabset>
+
+
+
+
+ <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Full Instance JSON Data</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">&times;</button>
+    </div>
+    <div class="modal-body" style="background-color:#eee">
+      <pre>
+          {{json|json}}
+      </pre>
+    
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
+

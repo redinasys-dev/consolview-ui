@@ -1,0 +1,98 @@
+<app-custom-loader *ngIf="isLoading"></app-custom-loader>
+
+<div class="app-body">
+  <main class="main d-flex align-items-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <div class="card mx-4">
+            <div class="card-body p-4">
+              <form  [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                <h1>Register</h1>
+                <p class="text-muted">Create your account</p>
+                <!-- {{countries|json}} -->
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-flag"></i></span>
+                  </div>
+                  <select class="custom-select" formControlName="country" name="role">
+                      <option value="" disabled>Choose Country</option>
+                      <option *ngFor="let countries of countries" [ngValue]="countries.name">{{countries.name}}</option>
+                   </select>
+              </div>
+              <small class="text-danger" style="margin-left:10px;" *ngIf="registerForm.get('country').invalid && (registerForm.get('country').dirty || registerForm.get('country').touched)">
+                  Please choose your country.
+              </small>
+
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">@</span>
+                </div>
+                <input formControlName="email" type="text" class="form-control" placeholder="Email" autocomplete="email" readonly>
+              </div>
+              <small class="text-danger" style="margin-left:10px;" *ngIf="registerForm.get('email').invalid && (registerForm.get('email').dirty || registerForm.get('email').touched)">
+                  Please provide a valid email address.
+              </small>
+
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-user"></i></span>
+                  </div>
+                  <input formControlName="fullname" type="text" class="form-control" placeholder="Full Name">
+                </div>
+                <small class="text-danger" style="margin-left:10px;" *ngIf="registerForm.get('fullname').invalid && (registerForm.get('fullname').dirty || registerForm.get('fullname').touched)">
+                    Please enter your full name.
+                </small>
+              
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-lock"></i></span>
+                  </div>
+                  <input formControlName="password" type="password" class="form-control" placeholder="Password" autocomplete="new-password" required>
+                </div>
+                <small class="text-danger" style="margin-left:10px;" *ngIf="registerForm.get('password').invalid && (registerForm.get('password').dirty || registerForm.get('password').touched)">
+                    Please enter your password.
+                </small>
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-lock"></i></span>
+                  </div>
+                  <input formControlName="cpassword" type="password" class="form-control" placeholder="Repeat password" autocomplete="new-password" required>
+                </div>
+               <!--  <small class="text-danger" style="margin-left:10px;" *ngIf="registerForm.get('cpassword').invalid && (registerForm.get('cpassword').dirty || registerForm.get('cpassword').touched)">
+                    Please repeat your password.
+                </small> -->
+
+                <small class="text-danger" style="margin-left:10px;" *ngIf="registerForm.hasError('notSame')">
+                    Password do not match.
+                </small>
+
+
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-building-o"></i></span>
+                  </div>
+                  <input formControlName="company" type="text" class="form-control" placeholder="Company Name">
+                </div>
+                <small class="text-danger" style="margin-left:10px;" *ngIf="registerForm.get('company').invalid && (registerForm.get('company').dirty || registerForm.get('company').touched)">
+                    Please enter your company name.
+                </small>
+
+
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-phone"></i></span>
+                  </div>
+                  <input formControlName="mobile_number" type="number" class="form-control" placeholder="Mobile Number">
+                </div>
+               
+                <button type="submit" class="btn btn-block btn-success" [disabled]="!registerForm.valid">Create Account</button>
+              </form>
+            </div>
+        
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

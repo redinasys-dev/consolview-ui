@@ -1,0 +1,20 @@
+.a1, .a2{
+    animation:blinking 1.5s infinite;
+    font-size: 20px;
+    color:red;
+    }
+    @keyframes blinking{
+    0%{   color: red;   }
+    47%{   color: #000; }
+    62%{   color: transparent; }
+    97%{   color:transparent; }
+    100%{  color: #000;   }
+    }
+
+    ::ng-deep ngb-modal-backdrop {
+        z-index: 101 !important;
+      }
+
+      .light-grey-backdrop{
+          background-color:#ececec;
+      }

@@ -1,0 +1,106 @@
+<app-custom-loader *ngIf="isLoading"></app-custom-loader>
+
+<div class="animated fadeIn">
+    <div class="row">
+     <!-- {{account_type}} -->
+      <div class="col-md-12 mb-4">
+        <!-- Nav tabs -->
+        <tabset>
+           <tab id="aws" (selectTab)="changeTab($event)">
+            <ng-template tabHeading><i class="icon-calculator"></i> AWS</ng-template>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+<!--                       {{awsAccounts|json}}
+ -->                      <div class="card-header">
+                        <strong>Account List</strong>
+        
+                        <button class="pull-right btn btn-primary" (click)="goToAddAccount()">Add New Account</button> 
+        
+                      </div>
+                      <div class="card-body">
+                        <table class="table table-striped">
+                          <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Role ARN</th>
+                                <th>Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                                <tr *ngFor=" let aws of awsAccounts  | paginate: { itemsPerPage: limit, currentPage: page,
+                                    totalItems: total }; let i = index; ">
+                                    <td>{{ aws?.account_name |titlecase }}</td>
+                                    <td>{{ aws?.description }}</td>
+                                    <td>{{ aws?.role_arn }}</td>
+                                    
+                                    <td><i style="cursor: pointer" class="icon cil-pencil" title="Edit this account"   (click)="openEditAccount(content,aws)"></i>&nbsp;&nbsp;<i style="cursor: pointer" class="icon cil-delete" title="Delete this account" (click)="deleteAccount(aws?._id)" ></i>
+                                   </td>
+                           
+                          </tbody>
+                        </table>
+                        <div class="pull-right">
+                                <pagination-controls (pageChange)="pageChange($event)"></pagination-controls>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+               
+            </div>
+          </tab>
+
+
+          <tab id="azure" (selectTab)="changeTab($event)">
+            <ng-template tabHeading><i class="icon-basket-loaded"></i> AZURE</ng-template>
+            <!-- {{azureAccounts|json}} -->
+            In Progress...
+          </tab>
+          <tab id="gcp" (selectTab)="changeTab($event)">
+            <ng-template tabHeading><i class="icon-pie-chart"></i> GCP</ng-template>
+            <!-- {{gcpAccounts|json}} -->
+            In Progress...
+          </tab>
+        </tabset>
+      </div><!--/.col-->
+     
+    </div><!--/.row-->
+  </div>
+
+  <ng-template #content let-modal>
+      <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Account Update</h4>
+          <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">&times;</button>
+      </div>
+      <div class="modal-body">
+          <form [formGroup]="editAWSAccountForm" (ngSubmit)="onEditAccountSubmit()">
+              <div class="form-group">
+                  <label for="company">Account Name</label>
+                  <input type="text" class="form-control" id="account_name" name="account_name" placeholder="Enter account name" formControlName="account_name">
+                  <small class="text-danger" style="margin-left:10px;" *ngIf="editAWSAccountForm.get('account_name').invalid && (editAWSAccountForm.get('account_name').dirty || editAWSAccountForm.get('account_name').touched)">
+                      Please enter account name.
+                  </small>
+                </div>
+                <div class="form-group">
+                    <label for="vat">Description</label>
+                    <textarea  class="form-control" id="description" name="description" placeholder="Enter Account Description" formControlName="description"></textarea>
+                    <small class="text-danger" style="margin-left:10px;" *ngIf="editAWSAccountForm.get('description').invalid && (editAWSAccountForm.get('description').dirty || editAWSAccountForm.get('description').touched)">
+                        Please enter some description.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label for="vat">Role ARN</label>
+                    <input type="text" class="form-control" id="role_arn" name="role_arn" placeholder="Enter Role ARN" formControlName="role_arn">
+                    <small class="text-danger" style="margin-left:10px;" *ngIf="editAWSAccountForm.get('role_arn').invalid && (editAWSAccountForm.get('role_arn').dirty || editAWSAccountForm.get('role_arn').touched)">
+                        Please enter role_arn.
+                    </small>
+                  </div>
+                    
+              <button type="submit" class="btn btn-outline-dark pull-right" [disabled]="!editAWSAccountForm.valid">Save</button>
+          </form>
+      </div>
+     
+  </ng-template>
+  

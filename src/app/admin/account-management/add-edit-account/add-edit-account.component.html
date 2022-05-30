@@ -1,0 +1,108 @@
+<app-custom-loader *ngIf="isLoading"></app-custom-loader>
+
+<div class="animated fadeIn">
+    <div class="row">
+     
+      <div class="col-md-12 mb-4">
+        <!-- Nav tabs -->
+        <tabset>
+          <tab id="aws" [active]="activeTab === 'aws'" (selectTab)="changeTab($event)">
+            <ng-template tabHeading><i class="icon-calculator"></i> AWS</ng-template>
+
+            <div class="row">
+                <div class="col-md-8">
+
+                        <div class="card">
+                          <div class="card-header">
+                            <strong>AWS ACCOUNT DETAILS</strong>
+<!--                             <small>Please fill the below details</small>
+ -->                          </div>
+                          <div class="card-body">
+                              <form [formGroup]="accountForm" (ngSubmit)="onAWSSubmit()">
+                            <div class="form-group">
+                              <label for="company">Account Name</label>
+                              <input type="text" class="form-control" id="account_name" name="account_name" placeholder="Enter account name" formControlName="account_name">
+                              <small class="text-danger" style="margin-left:10px;" *ngIf="accountForm.get('account_name').invalid && (accountForm.get('account_name').dirty || accountForm.get('account_name').touched)">
+                                  Please enter account name.
+                              </small>
+                            </div>
+                            <div class="form-group">
+                                <label for="vat">Description</label>
+                                <textarea  class="form-control" id="description" name="description" placeholder="Enter Account Description" formControlName="description"></textarea>
+                                <small class="text-danger" style="margin-left:10px;" *ngIf="accountForm.get('description').invalid && (accountForm.get('description').dirty || accountForm.get('description').touched)">
+                                    Please enter some description.
+                                </small>
+                            </div>
+
+                            <div class="form-group" style="font-size:12px;padding:10px;">
+                                <strong>Specify cross account ARN</strong>
+                                <p class="text-muted">
+                                    Follow steps on the right to create an IAM role in AWS that will give us cross-account access to your AWS resources. Then enter the Role ARN below. Tip - You’ll need the our AWS account ID and external ID to complete the steps.
+                                </p>
+
+
+                            </div>
+                              <div class="form-group">
+                                <label for="street">AWS Internal ID</label>
+                                <input type="text" class="form-control" id="street" value="23423sdwrf" readonly>
+                              </div>
+
+                              <div class="form-group">
+                                <label for="street">AWS External ID</label>
+                                <input type="text" class="form-control" id="street" value="453sdsdf" readonly>
+                              </div>
+                              
+                            <div class="form-group">
+                              <label for="vat">Role ARN</label>
+                              <input type="text" class="form-control" id="role_arn" name="role_arn" placeholder="Enter Role ARN" formControlName="role_arn">
+                              <small class="text-danger" style="margin-left:10px;" *ngIf="accountForm.get('role_arn').invalid && (accountForm.get('role_arn').dirty || accountForm.get('role_arn').touched)">
+                                  Please enter role_arn.
+                              </small>
+                            </div>
+                          
+                          
+                            <div class="form-group">
+                                <button type="submit" [disabled]="accountForm.invalid" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Add Account</button>
+                            </div>
+                            </form>
+                          </div>
+                        </div>
+
+                </div>
+                <div class="col-md-4">
+
+                  <strong>Follow the below steps:</strong>
+                  <ol>
+                    <li>Log in to Amazon Web Services (AWS) Console.</li>
+                    <li>Go to the IAM service.</li>
+                    <li>Go to Roles and click Create Role.</li>
+                    <li>Under “Select type of trusted entity” choose Another AWS account. Then:
+                        <br/>Paste in the Redinasys AWS Account ID (from connector details)..</li>
+                    <li>Select Require external ID and paste in the External ID (from connector details).</li>
+                    <li>Select the following policies: <br/>
+                        Find the policy titled “AmazonEC2ReadOnlyAccess” and select the check boxes next to it.</li>
+                    <li>Click Next: Tags.</li>
+                    <li>Click Next: Review.</li>
+                    <li>Enter a role name (e.g. RedinasysViewRole) and click Create role.</li>
+                    <li>Click on the role you just created to view details. Copy the Role ARN value and paste it into the Redinasys Account Page.</li>
+                  </ol>
+                 
+                </div>
+            </div>
+          </tab>
+
+
+          <tab id="azure" [active]="activeTab === 'azure'" (selectTab)="changeTab($event)">
+            <ng-template tabHeading><i class="icon-basket-loaded"></i> AZURE</ng-template>
+            In Progress...
+          </tab>
+          <tab id="gcp" [active]="activeTab === 'gcp'" (selectTab)="changeTab($event)">
+            <ng-template tabHeading><i class="icon-pie-chart"></i> GCP</ng-template>
+            In Progress...
+          </tab>
+        </tabset>
+      </div><!--/.col-->
+     
+    </div><!--/.row-->
+  </div>
+  
