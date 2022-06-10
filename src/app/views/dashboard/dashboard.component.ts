@@ -42,6 +42,8 @@ export class DashboardComponent implements OnInit {
   TotalAWSInstanceCount:number=0;
   TotalAWSRunningInstances:number=0;
   TotalAWSStoppedInstances:number=0;
+  TotalLinuxCount:number=0;
+  TotalWindowsCount:number=0;
   TotalRegionWiseInstances:any;
   regionArray=[];
 
@@ -49,6 +51,8 @@ export class DashboardComponent implements OnInit {
 	public page: number = 1;
 	public limit: number = 10;
   json:any;
+  term:any;
+
   constructor(private adminService:AdminService, private dashboardService:DashboardService,private modalService: NgbModal) {
       //location.reload();
       if(!localStorage.getItem('isReloaded')){
@@ -387,6 +391,8 @@ export class DashboardComponent implements OnInit {
         this.TotalAWSRunningInstances=res['TotalRunningInstances'];
         this.TotalAWSStoppedInstances=res['TotalStoppedInstances'];
         this.TotalRegionWiseInstances=res['RegionWiseInstances'];
+        this.TotalLinuxCount=res['TotalLinuxPlatForm'];
+        this.TotalWindowsCount=res['TotalWindowsPlatForm'];
         this.regionArray=[];
 
         for (var key in this.TotalRegionWiseInstances) {

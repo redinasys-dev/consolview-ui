@@ -6,3 +6,9 @@
 
 // If you want to add something do it here
 @import "custom";
+
+.app, app-dashboard, app-root {
+    display: flex;
+    flex-direction: column;
+    min-height: 105vh !important;
+}

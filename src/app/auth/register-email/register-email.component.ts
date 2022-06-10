@@ -4,7 +4,7 @@ import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-register-email',
-  templateUrl: 'register-email.component.html'
+  templateUrl: 'register-email.component.html',
 })
 export class RegisterEmailComponent {
 

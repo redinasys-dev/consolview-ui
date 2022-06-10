@@ -12,7 +12,7 @@ export class UserManagementComponent implements OnInit {
   users=[];
   public total: number = 0;
 	public page: number = 1;
-	public limit: number = 3;
+	public limit: number = 10;
   public search: string = '';
   public isLoading=false;
 

@@ -42,6 +42,9 @@
                               &nbsp;&nbsp;
                               <span style="cursor: pointer" title="Change user status" class="badge badge-primary" (click)="updateStatus(user?._id,!user?.active_status)">Change Status</span>
                             </td>
+                            </tr>
+                            <p *ngIf="users.length === 0" class="text-danger"
+                                   style="margin-top: 15px;">No customers found..!</p>
                    
                   </tbody>
                 </table>

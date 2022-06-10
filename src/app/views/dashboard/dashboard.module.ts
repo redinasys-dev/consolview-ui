@@ -14,6 +14,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { InstancefilterPipe } from './instance-filter.pipe';
+
 
 
 @NgModule({
@@ -30,6 +32,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ButtonsModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot()
   ],
-  declarations: [ DashboardComponent ]
+  declarations: [ DashboardComponent,InstancefilterPipe ]
 })
 export class DashboardModule { }

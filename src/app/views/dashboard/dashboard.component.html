@@ -67,7 +67,7 @@ TotalAWSRunningInstances:number=0;
 TotalAWSStoppedInstances:number=0; -->
      <div class="animated fadeIn">
         <div class="row">
-          <div class="col-sm-6 col-lg-3">
+          <div class="col-sm-6 col-lg-4">
             <div class="card text-white bg-info">
               <div class="card-body pb-0">
                 <div class="text-value">{{TotalAWSAccounts || 0}}</div>
@@ -84,7 +84,7 @@ TotalAWSStoppedInstances:number=0; -->
               </div>
             </div>
           </div><!--/.col-->
-          <div class="col-sm-6 col-lg-3">
+          <div class="col-sm-6 col-lg-4">
             <div class="card text-white bg-primary">
               <div class="card-body pb-0">
                
@@ -102,14 +102,14 @@ TotalAWSStoppedInstances:number=0; -->
               </div>
             </div>
           </div><!--/.col-->
-          <div class="col-sm-6 col-lg-3">
+          <div class="col-sm-6 col-lg-4">
             <div class="card text-white bg-warning">
               <div class="card-body pb-0">
               
                 <div class="text-value">{{TotalAWSRunningInstances || 0}}</div>
                 <div>Totall Running Instances</div>
               </div>
-              <div class="chart-wrapper mt-3" style="height:70px;">
+              <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
                 <canvas baseChart class="chart"
                 [datasets]="lineChart3Data"
                 [labels]="lineChart3Labels"
@@ -120,7 +120,7 @@ TotalAWSStoppedInstances:number=0; -->
               </div>
             </div>
           </div><!--/.col-->
-          <div class="col-sm-6 col-lg-3">
+          <div class="col-sm-6 col-lg-4">
             <div class="card text-white bg-danger">
               <div class="card-body pb-0">
                
@@ -138,6 +138,46 @@ TotalAWSStoppedInstances:number=0; -->
               </div>
             </div>
           </div><!--/.col-->
+
+          <div class="col-sm-6 col-lg-4">
+            <div class="card text-white bg-warning">
+              <div class="card-body pb-0">
+               
+                <div class="text-value">{{TotalLinuxCount || 0}}</div>
+                <div>Total Linux Platform Count</div>
+              </div>
+              <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                <canvas baseChart class="chart"
+                  [datasets]="brandBoxChartData2"
+                  [labels]="brandBoxChartLabels"
+                  [options]="brandBoxChartOptions"
+                  [colors]="brandBoxChartColours"
+                  [legend]="brandBoxChartLegend"
+                  [chartType]="brandBoxChartType"></canvas>
+              </div>
+            </div>
+          </div><!--/.col-->
+
+          <div class="col-sm-6 col-lg-4">
+            <div class="card text-white bg-danger">
+              <div class="card-body pb-0">
+               
+                <div class="text-value">{{TotalWindowsCount || 0}}</div>
+                <div>Total Windows Platform Count</div>
+              </div>
+              <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                <canvas baseChart class="chart"
+                  [datasets]="brandBoxChartData2"
+                  [labels]="brandBoxChartLabels"
+                  [options]="brandBoxChartOptions"
+                  [colors]="brandBoxChartColours"
+                  [legend]="brandBoxChartLegend"
+                  [chartType]="brandBoxChartType"></canvas>
+              </div>
+            </div>
+          </div><!--/.col-->
+
+
         </div><!--/.row-->
        <!--  <div class="card">
           <div class="card-body">
@@ -350,12 +390,18 @@ TotalAWSStoppedInstances:number=0; -->
                    <!--  <span style="cursor: pointer" title="View Full JSON" class="badge badge-primary" (click)="openXl(content,'{}')">See Full JSON</span>   -->
                   </div>
                   <div class="card-body">
+                          <form style="margin-bottom: 5px;">
+                              <input class="form-control col-sm-4"
+                                  placeholder="Search here" type="text" name="siteVal" id="siteVal"
+                                  #siteName [(ngModel)]="term" />
+                          </form>
                     <table class="table table-striped">
                       <thead>
                         <tr>
                             <th>Id</th>
                             <th>Type</th>
                             <th>State</th>
+                            <th>Platform</th>
                             <th>Launch Time</th>
                             <th>Region</th>
                             <th>Account</th>
@@ -363,11 +409,14 @@ TotalAWSStoppedInstances:number=0; -->
                         </tr>
                       </thead>
                       <tbody>
-                            <tr *ngFor=" let instance of selectedAwsInstances  | paginate: { itemsPerPage: limit, currentPage: page,
+                          <ng-container *ngIf="( selectedAwsInstances | instancefilter:term) as result">
+
+                            <tr *ngFor=" let instance of result  | paginate: { itemsPerPage: limit, currentPage: page,
                                 totalItems: total }; let i = index; ">
                                 <td>{{ instance?.InstanceId }}</td>
                                 <td>{{ instance?.InstanceType }}</td>
                                 <td>{{ instance?.State }}</td>
+                                <td>{{ instance?.Platform }}</td>
                                 <td>{{ instance?.LaunchTime }}</td>
                                 <td>{{ instance?.region }}</td>
                                 <td>{{ instance?.account_name }}</td>
@@ -381,7 +430,10 @@ TotalAWSStoppedInstances:number=0; -->
                                   
 
                                 </td>
-                       
+                                </tr>
+                                <p *ngIf="result.length === 0" class="text-danger"
+                          style="margin-top: 15px;">No Instances  found..!</p>
+                  </ng-container>
                       </tbody>
                     </table>
                     <div class="pull-right">

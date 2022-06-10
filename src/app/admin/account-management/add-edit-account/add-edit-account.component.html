@@ -43,13 +43,14 @@
 
                             </div>
                               <div class="form-group">
-                                <label for="street">AWS Internal ID</label>
-                                <input type="text" class="form-control" id="street" value="23423sdwrf" readonly>
+                                <label for="street">AWS Internal ID  <i class="cil-copy" title="Copy this" (click)="copyText('aws_internal_id')"></i>
+                                </label>
+                                <input type="text" class="form-control" id="aws_internal_id" value="010979746100" readonly>
                               </div>
 
                               <div class="form-group">
-                                <label for="street">AWS External ID</label>
-                                <input type="text" class="form-control" id="street" value="453sdsdf" readonly>
+                                <label for="street">AWS External ID <i (click)="copyText('aws_external_id')" class="cil-copy" title="Copy this"></i></label>
+                                <input type="text" class="form-control" id="aws_external_id" value="Redinasys" readonly>
                               </div>
                               
                             <div class="form-group">

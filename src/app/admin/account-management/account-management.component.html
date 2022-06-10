@@ -38,6 +38,9 @@
                                     
                                     <td><i style="cursor: pointer" class="icon cil-pencil" title="Edit this account"   (click)="openEditAccount(content,aws)"></i>&nbsp;&nbsp;<i style="cursor: pointer" class="icon cil-delete" title="Delete this account" (click)="deleteAccount(aws?._id)" ></i>
                                    </td>
+                                   </tr>
+                                   <p *ngIf="awsAccounts.length === 0" class="text-danger"
+                                   style="margin-top: 15px;">No Account found..!</p>
                            
                           </tbody>
                         </table>
