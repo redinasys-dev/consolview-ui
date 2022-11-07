@@ -42,6 +42,14 @@ export class DashboardService {
     )
   } 
 
+  getAllAzureVms(body) {
+    return this.httpClient.post(this.BASE_URL + '/vms/getAzureVms', JSON.stringify(body), this.httpHeader)
+    .pipe(
+      retry(1),
+      catchError(this.httpError)
+    )
+  } 
+
 
 
 

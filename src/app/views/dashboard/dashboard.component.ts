@@ -389,7 +389,7 @@ export class DashboardComponent implements OnInit {
         this.TotalAWSAccounts=res['TotalAccounts'];
         this.TotalAWSInstanceCount=res['TotalInstanceCount'];
         this.TotalAWSRunningInstances=res['TotalRunningInstances'];
-        this.TotalAWSStoppedInstances=res['TotalStoppedInstances'];
+        this.TotalAWSStoppedInstances=res['StoppedInstances'];
         this.TotalRegionWiseInstances=res['RegionWiseInstances'];
         this.TotalLinuxCount=res['TotalLinuxPlatForm'];
         this.TotalWindowsCount=res['TotalWindowsPlatForm'];
